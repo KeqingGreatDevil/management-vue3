@@ -1,0 +1,58 @@
+<template>
+  <el-header>
+    <div class="l-content">
+      <el-button size="small" plain @click="handleCollapse">
+        <el-icon>
+          <Menu />
+        </el-icon>
+      </el-button>
+      <h3>首页</h3>
+    </div>
+    <div class="r-content">
+      <el-dropdown>
+        <img src="../assets/vue.svg" alt="" />
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item>个人中心</el-dropdown-item>
+            <el-dropdown-item>退出</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </div>
+  </el-header>
+</template>
+
+<script setup>
+import { useStore } from "vuex";
+
+let store = useStore();
+let handleCollapse = () => {
+  store.commit("updateIsCollapse");
+};
+</script>
+<style lang="scss" scoped>
+.el-header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  .l-content {
+    display: flex;
+    align-items: center;
+    .el-button {
+      margin-right: 20px;
+    }
+    h3 {
+      color: #fff;
+    }
+  }
+  .r-content {
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+  }
+}
+</style>

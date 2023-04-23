@@ -16,22 +16,45 @@
       </el-card>
       <el-card shadow="hover" style="margin-top: 20px" height="450px">
         <el-table :data="tableData">
-          <el-table-column v-for="(val, key) in tableList" :key="key" :prop="key" :label="val">
+          <el-table-column
+            v-for="(val, key) in tableList"
+            :key="key"
+            :prop="key"
+            :label="val"
+          >
           </el-table-column>
         </el-table>
       </el-card>
     </el-col>
     <el-col :span="16" style="margin-top: 20px">
-      <div>
-        <el-card :body-style="{ display: 'felx', padding: 0 }"></el-card>
+      <div class="num">
+        <el-card
+          shadow="hover"
+          :body-style="{ display: 'flex', padding: 0 }"
+          v-for="item in countData"
+          :key="item.name"
+        >
+          <component
+            class="icons"
+            :is="item.icon"
+            :style="{ background: item.color }"
+          ></component>
+          <div class="details">
+            <p class="num">￥{{ item.value }}</p>
+            <p class="txt">{{ item.name }}</p>
+          </div>
+        </el-card>
       </div>
+      <el-card style="height: 280px" shadow="hover">
+        <div class="echart" style="height: 280px"></div>
+      </el-card>
     </el-col>
   </el-row>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import { getTableList } from '../../api/api'
+import { onMounted, ref } from "vue";
+import { getTableList, getCountList } from "../../api/api";
 
 // const getTableList = async () => {
 //   await axios.get('/home/getData').then((res) => {
@@ -40,20 +63,28 @@ import { getTableList } from '../../api/api'
 //     }
 //   })
 // }
+let tableData = ref([]);
+let countData = ref([]);
 
-onMounted(async () => {
-  let res = await getTableList()
-  if (res.data.code == 200) {
-    tableData.value = res.data.data.tableData
-  }
-})
+onMounted(() => {
+  getTableListData();
+  getCountListData();
+});
+
+const getTableListData = async () => {
+  let res = await getTableList();
+  tableData.value = res.data.data.tableData;
+};
+const getCountListData = async () => {
+  let res = await getCountList();
+  countData.value = res.data.data.countData;
+};
 const tableList = {
   name: "课程",
   todayBuy: "今日购买",
   monthBuy: "本月购买",
   totalBuy: "总购买",
 };
-let tableData = ref([])
 </script>
 
 <style lang="scss" scoped>
@@ -82,6 +113,35 @@ let tableData = ref([])
       span {
         color: #666;
         margin-left: 60px;
+      }
+    }
+  }
+  .num {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .el-card {
+      width: 32%;
+      margin-bottom: 20px;
+    }
+    .icons {
+      width: 80px;
+      height: 80px;
+      color: white;
+    }
+    .details {
+      margin-left: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      .num {
+        font-size: 30px;
+        margin-bottom: 10px;
+      }
+      .txt {
+        font-size: 14px;
+        text-align: center;
+        color: #999;
       }
     }
   }

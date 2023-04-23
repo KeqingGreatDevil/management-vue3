@@ -6,7 +6,12 @@
           <Menu />
         </el-icon>
       </el-button>
-      <h3>首页</h3>
+      <el-breadcrumb separator="/" class="bread">
+        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="current.path" v-if="current">{{
+          current.lable
+        }}</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
     <div class="r-content">
       <el-dropdown>
@@ -24,11 +29,16 @@
 
 <script setup>
 import { useStore } from "vuex";
+import { computed } from "vue";
 
 let store = useStore();
 let handleCollapse = () => {
   store.commit("updateIsCollapse");
 };
+const current = computed(() => {
+  return store.state.currentMenu;
+});
+console.log(current.value);
 </script>
 <style lang="scss" scoped>
 .el-header {
@@ -43,9 +53,6 @@ let handleCollapse = () => {
     .el-button {
       margin-right: 20px;
     }
-    h3 {
-      color: #fff;
-    }
   }
   .r-content {
     img {
@@ -54,5 +61,9 @@ let handleCollapse = () => {
       border-radius: 50%;
     }
   }
+}
+.bread :deep(span) {
+  color: #fff !important;
+  cursor: pointer;
 }
 </style>

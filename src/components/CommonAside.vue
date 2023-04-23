@@ -102,6 +102,7 @@ const clickMenu = (item) => {
   router.push({
     name: item.name,
   });
+  store.commit("selectMenu", item);
 };
 </script>
 

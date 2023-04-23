@@ -1,6 +1,6 @@
 <template>
   <div class="common-layout">
-    <el-container>
+    <el-container class="lay-container">
       <el-aside :width="!store.state.isCollapse ? '180px' : '64px'">
         <CommonAside />
       </el-aside>
@@ -22,5 +22,8 @@ let store = useStore();
 .el-container {
   flex-wrap: wrap;
   align-items: flex-start;
+}
+.lay-container {
+  flex-wrap: nowrap;
 }
 </style>
